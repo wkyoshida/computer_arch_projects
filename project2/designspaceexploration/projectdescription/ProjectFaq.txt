@@ -1,0 +1,22 @@
+Design Project FAQ
+
+Q: What are the column headers for the .log file?
+
+A: normalized EDP, normalized Execution time, absolute EDP, absolute Execution time
+
+The writes to both the .best and .log files are generated near the end of main.
+
+Q: What are the column headers for the .best file?
+
+A: Headers differ by line -
+
+Line 1 headers: bestEDPconfig, normalized EDP of bestEDPconfig, normalized Execution time of bestEDPconfig, absolute EDP of bestEDPconfig, absolute Execution time of bestEDPconfig, absolute EDP of Bench 0 on bestEDPconfig, normalized EDP of Bench 0 on bestEDPconfig, absolute EDP of Bench 1 on bestEDPconfig, normalized EDP of Bench 1 on bestEDPconfig, absolute EDP of Bench 2 on bestEDPconfig, normalized EDP of Bench 2 on bestEDPconfig, absolute EDP of Bench 3 on bestEDPconfig, normalized EDP of Bench 3 on bestEDPconfig, absolute EDP of Bench 4 on bestEDPconfig, normalized EDP of Bench 4 on bestEDPconfig
+
+Line 2 headers: bestTimeconfig, normalized EDP of bestTimeconfig, normalized Execution time of bestTimeconfig, absolute EDP of bestTimeconfig, absolute Execution time of bestTimeconfig, absolute Time of Bench 0 on bestTimeconfig, normalized Time of Bench 0 on bestTimeconfig, absolute Time of Bench 1 on bestTimeconfig, normalized Time of Bench 1 on bestTimeconfig, absolute Time of Bench 2 on bestTimeconfig, normalized Time of Bench 2 on bestTimeconfig, absolute Time of Bench 3 on bestTimeconfig, normalized Time of Bench 3 on bestTimeconfig, absolute Time of Bench 4 on bestTimeconfig, normalized Time of Bench 4 on bestTimeconfig
+
+Q: Why are there only 18 configuration parameters when SimpleScalar (and the project specification) list so many more?
+
+A:
+There are 18 configuration variables, and more derived settings from those 18 configuration variables, and still more settings that are fixed as constant (e.g. MPLAT). As an example, the first variable, width, is also used within the shell script to determine L1 block size for both the I and D caches. This relationship therefore does not need to be validated (it is correct by construction). If the width is known, then the L1 block size for both I and D caches is 8*width. Given the block size (set by width), associativity (set independently), and number of sets (set independently), you can determine total cache size for the L1 D and I caches and then validate if the latency for that cache (set independently) is set correctly.
+The miscellaneous settings and bounds on viable settings are largely enforced by the framework.
+There are functions in the utils file that provide outputs such as the size of a cache given a configuration string. These can either be called (you're free to insert the necessary function prototypes in your file) or used to derive code from in forming your validation code.
